@@ -3,7 +3,8 @@ const newBoardBtn = document.querySelector('.new-board-btn');
 const container = document.getElementById("container");
 const boardField = document.querySelector('.board-field');
 
-let cellWith = 69;
+let cellWidth = 69;
+let boardHeight = 92;
 
 let currentMatrix;
 let playfieldSize;
@@ -178,8 +179,8 @@ function drawPlayfieldAfterMove(){
 function makeBoard(){
   board = document.createElement("div");
   board.classList.add('board');
-  board.style.width = `${playfieldSize * cellWith}px`;
-  board.style.height = `${(currentMatrix.length - 1) * cellWith} + 20px`;
+  board.style.width = `${playfieldSize * cellWidth}px`;
+  board.style.height = `${(currentMatrix.length - 1) * boardHeight}px`;
   board.setAttribute('id', `board${serialNumber}`);
   boardField.appendChild(board);
 }
@@ -188,7 +189,7 @@ function makePlayfield(){
   playfield = document.createElement("div");
   playfield.classList.add('playfield');
   playfield.setAttribute('id', `playfield${serialNumber}`);
-  playfield.style.width = `${playfieldSize * cellWith}px`;
+  playfield.style.width = `${playfieldSize * cellWidth}px`;
 }
 
 function makePlayfieldAfterMove(){
@@ -455,7 +456,6 @@ function makeWolvesWinBoard(){
   document.getElementById(currentBoard).appendChild(wolvesWinBoard);
   points = 0;
   wolvesWinBoard.style.zIndex = 1;
-  document.getElementByName(currentPlayfieldName).removeAttribute(onclick);
 }
 
 function makeRabbitWinBoard(sumPoints){

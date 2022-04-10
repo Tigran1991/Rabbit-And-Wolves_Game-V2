@@ -111,6 +111,7 @@
     align-items: center;
     flex-wrap: wrap;
     position: relative;
+    /* height: 600px; */
     /* width: 100vw;
     height: 100vh; */
 }
@@ -132,7 +133,7 @@
 .side-buttons{
     display: flex;
     position: absolute;
-    bottom: -66px;
+    bottom: 0px;
     width: 96px;
     height: 66px;
     background-color: rgb(103, 137, 199);
