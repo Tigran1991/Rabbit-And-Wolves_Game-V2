@@ -42,7 +42,7 @@ let wolvesWinBoard;
 let wolvesWinAnnouncement;
 let points = 0;
 let rabbitWinAnnouncementPoints;
-// let rabbitMoveDirection;
+let rabbitMoveDirection;
 
 const characters = {
   freeCell: 0,
@@ -154,10 +154,10 @@ function drawPlayfield() {
   makeMoveButtonsDiv();
   board.appendChild(playfield);
   board.appendChild(moveButtons);
-  makeMoveButtons(moveingToRight, "move-right", "rabbitMoveToRight(event)");
-  makeMoveButtons(moveingToDown, "move-down", "rabbitMoveToDown(event)");
-  makeMoveButtons(moveingToLeft, "move-left", "rabbitMoveToLeft(event)");
-  makeMoveButtons(moveingToUp, "move-up", "rabbitMoveToUp(event)");
+  makeMoveButtons(moveingToRight, "move-right", "rabbitMove(event)");
+  makeMoveButtons(moveingToDown, "move-down", "rabbitMove(event)");
+  makeMoveButtons(moveingToLeft, "move-left", "rabbitMove(event)");
+  makeMoveButtons(moveingToUp, "move-up", "rabbitMove(event)");
   currentMatrix.forEach((element) => {
     element.forEach((item) => {
       addCharacters(element, item);
@@ -250,84 +250,70 @@ function characterCurrentCoordinate(character) {
   }
 }
 
-function rabbitMoveToRight(eventName){
+function rabbitMove(eventName){
   points++;
+  determineRabbitMoveDirection(eventName);
   setCurrentPlayfield(eventName);
   findCurrentBoardIndex();
   currentMatrix = matrixStorage[currentElementsIndex];
   currentBoard = boardStorage[currentElementsIndex];
   currentButtonDiv = moveButtonStorage[currentElementsIndex];
   characterCurrentCoordinate(characters.rabbitCell);
+  if(rabbitMoveDirection == 'move-right'){
+    rabbitMoveToRight();
+  }
+  if(rabbitMoveDirection == 'move-down'){
+    rabbitMoveToDown();
+  }
+  if(rabbitMoveDirection == 'move-left'){
+    rabbitMoveToLeft();
+  }
+  if(rabbitMoveDirection == 'move-up'){
+    rabbitMoveToUp();
+  }
+  if(rabbitCanMove(rabbitNewPositionX, rabbitNewPositionY, points)){
+    moveCharacter(characters.rabbitCell, rabbitNewPositionX, rabbitNewPositionY);
+  }
+  updateWolvesPositions();
+  drawPlayfieldAfterMove();
+}
+
+function determineRabbitMoveDirection(event){
+  rabbitMoveDirection = event.target.classList;
+  console.log(rabbitMoveDirection);
+}
+
+function rabbitMoveToRight(){
   if(posY === (playfieldSize - 1)){
     rabbitNewPositionX = posX, rabbitNewPositionY = 0;
   }else{
     rabbitNewPositionX = posX, rabbitNewPositionY = (posY + 1);
   }
-  if(rabbitCanMove(rabbitNewPositionX, rabbitNewPositionY, points)){
-    moveCharacter(characters.rabbitCell, rabbitNewPositionX, rabbitNewPositionY);
-  }
-  updateWolvesPositions();
-  drawPlayfieldAfterMove();
 }
 
-function rabbitMoveToDown(eventName){
-  points++;
-  setCurrentPlayfield(eventName);
-  findCurrentBoardIndex();
-  currentMatrix = matrixStorage[currentElementsIndex];
-  currentBoard = boardStorage[currentElementsIndex];
-  currentButtonDiv = moveButtonStorage[currentElementsIndex];
-  characterCurrentCoordinate(characters.rabbitCell);
+function rabbitMoveToDown(){
   if(posX === (playfieldSize - 1)){
     rabbitNewPositionX = 0, rabbitNewPositionY = posY;
-  }else{
+  }
+  else{
     rabbitNewPositionX = (posX + 1), rabbitNewPositionY = posY;
   }
-  if(rabbitCanMove(rabbitNewPositionX, rabbitNewPositionY, points)){
-    moveCharacter(characters.rabbitCell, rabbitNewPositionX, rabbitNewPositionY);
-  }
-  updateWolvesPositions()
-  drawPlayfieldAfterMove();
 }
 
-function rabbitMoveToLeft(eventName){
-  points++;
-  setCurrentPlayfield(eventName);
-  findCurrentBoardIndex();
-  currentMatrix = matrixStorage[currentElementsIndex];
-  currentBoard = boardStorage[currentElementsIndex];
-  currentButtonDiv = moveButtonStorage[currentElementsIndex];
-  characterCurrentCoordinate(characters.rabbitCell);
+function rabbitMoveToLeft(){
   if(posY === 0){
     rabbitNewPositionX = posX, rabbitNewPositionY = (playfieldSize - 1);
   }else{
     rabbitNewPositionX = posX, rabbitNewPositionY = (posY - 1);
   }
-  if(rabbitCanMove(rabbitNewPositionX, rabbitNewPositionY, points)){
-    moveCharacter(characters.rabbitCell, rabbitNewPositionX, rabbitNewPositionY);
-  }
-  updateWolvesPositions()
-  drawPlayfieldAfterMove();
 }
 
-function rabbitMoveToUp(eventName){
-  points++;
-  setCurrentPlayfield(eventName);
-  findCurrentBoardIndex();
-  currentMatrix = matrixStorage[currentElementsIndex];
-  currentBoard = boardStorage[currentElementsIndex];
-  currentButtonDiv = moveButtonStorage[currentElementsIndex];
-  characterCurrentCoordinate(characters.rabbitCell);
+function rabbitMoveToUp(){
   if(posX === 0){
     rabbitNewPositionX = (playfieldSize - 1), rabbitNewPositionY = posY;
   }else{
     rabbitNewPositionX = (posX - 1), rabbitNewPositionY = posY;
   }
-  if(rabbitCanMove(rabbitNewPositionX, rabbitNewPositionY, points)){
-    moveCharacter(characters.rabbitCell, rabbitNewPositionX, rabbitNewPositionY);
-  }
-  updateWolvesPositions();
-  drawPlayfieldAfterMove();
 }
 
 function setCurrentPlayfield(event){
@@ -444,10 +430,6 @@ function wolfCanMove(characterPositionX, characterPositionY){
   if(wolfNextPosition == characters.rabbitCell && rabbitIsWin){
     return false;
   }
-  if(wolfNextPosition == characters.carrotCell){
-    points--;
-    return false;
-  }
   if(wolfNextPosition == characters.rabbitCell){
     gameStatusBoard(characters.wolfCell);
   }
@@ -491,7 +473,6 @@ function makeRabbitWinBoard(sumPoints){
   document.getElementById(currentBoard).appendChild(rabbitWinBoard);
   points = 0;
   rabbitWinBoard.style.zIndex = '1';
-  document.getElementsByName(currentPlayfieldName) = false;
 }
 
                             
