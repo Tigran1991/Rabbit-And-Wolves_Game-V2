@@ -492,9 +492,6 @@ function makeRabbitWinBoard(sumPoints){
   removeEvent(currentButtonListElement);
 }
 
-function removeEvent(listElement){
-  listElement[0].removeEventListener('click', rabbitMove);
-  listElement[1].removeEventListener('click', rabbitMove);
-  listElement[2].removeEventListener('click', rabbitMove);
-  listElement[3].removeEventListener('click', rabbitMove);
+function removeEvent(currentButtonsList){
+  currentButtonsList.forEach(listElement => listElement.removeEventListener('click', rabbitMove));
 }
