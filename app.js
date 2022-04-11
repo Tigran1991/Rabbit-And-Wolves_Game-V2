@@ -1,10 +1,10 @@
-const startBtn = document.querySelector(".start-btn");
+const reloadBtn = document.querySelector(".reload-btn");
 const newBoardBtn = document.querySelector('.new-board-btn');
 const container = document.getElementById("container");
 const boardField = document.querySelector('.board-field');
 
 let cellWidth = 69;
-let boardHeight = 92;
+let boardHeight = 90;
 
 let currentMatrix;
 let playfieldSize;
@@ -65,6 +65,10 @@ const characterItems = {
   4: "fenceCell",
   5: "carrotCell",
 };
+
+reloadBtn.addEventListener('click', function (){
+  location.reload();
+})
 
 newBoardBtn.addEventListener("click", function () {
   newBoard();
@@ -158,7 +162,7 @@ function drawPlayfield() {
   makePlayfield();
   makeMoveButtonsDiv();
   board.appendChild(playfield);
-  board.appendChild(moveButtons);
+  playfield.appendChild(moveButtons);
   makeMoveButtons(moveingToRight, "move-right", rabbitMove);
   makeMoveButtons(moveingToDown, "move-bottom", rabbitMove);
   makeMoveButtons(moveingToLeft, "move-left", rabbitMove);
