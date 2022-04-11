@@ -37,6 +37,8 @@ let currentElementsIndex;
 let serialNumber = 0;
 let currentBoard;
 let currentPlayfieldName;
+let currentButton;
+let currentButtonElement;
 let rabbitWinBoard;
 let rabbitWinAnnouncement;
 let wolvesWinBoard;
@@ -44,6 +46,8 @@ let wolvesWinAnnouncement;
 let points = 0;
 let rabbitWinAnnouncementPoints;
 let rabbitMoveDirection;
+let currentButtonClassName;
+let currentButtonListElement;
 
 const characters = {
   freeCell: 0,
@@ -85,6 +89,11 @@ function makeBoardStorage(){
 function makePlayfieldStorage(){
   playfieldStorage.push(playfield.id);
   console.log(playfieldStorage);
+}
+
+function makeButtonStorage(){
+  moveButtonStorage.push(currentButtonElement);
+  console.log(moveButtonStorage);
 }
 
 function findCurrentBoardIndex(){
@@ -155,10 +164,10 @@ function drawPlayfield() {
   makeMoveButtonsDiv();
   board.appendChild(playfield);
   board.appendChild(moveButtons);
-  makeMoveButtons(moveingToRight, "move-right", "rabbitMove(event)");
-  makeMoveButtons(moveingToDown, "move-down", "rabbitMove(event)");
-  makeMoveButtons(moveingToLeft, "move-left", "rabbitMove(event)");
-  makeMoveButtons(moveingToUp, "move-up", "rabbitMove(event)");
+  makeMoveButtons(moveingToRight, "move-right", rabbitMove);
+  makeMoveButtons(moveingToDown, "move-bottom", rabbitMove);
+  makeMoveButtons(moveingToLeft, "move-left", rabbitMove);
+  makeMoveButtons(moveingToUp, "move-top", rabbitMove);
   currentMatrix.forEach((element) => {
     element.forEach((item) => {
       addCharacters(element, item);
@@ -207,13 +216,12 @@ function makeMoveButtonsDiv(){
 
 function makeMoveButtons(sideOfButton, moveSide, rabbitMoveSide){
   sideOfButton = document.createElement("button");
-  sideOfButton.classList.add(moveSide);
-  sideOfButton.setAttribute('onclick', rabbitMoveSide);
-  sideOfButton.setAttribute('id', `moveButtons${serialNumber}`);
+  sideOfButton.setAttribute('class', `moveSide${serialNumber}`);
+  sideOfButton.setAttribute('id', moveSide);
+  sideOfButton.addEventListener('click', rabbitMoveSide);
   sideOfButton.setAttribute('name', `playfield${serialNumber}`);
   moveButtons.appendChild(sideOfButton);
 }
-
 
 function addCharacters(element, item, characterItem) {
   createCurrentElement(element, item, characterItem);
@@ -252,39 +260,46 @@ function characterCurrentCoordinate(character) {
 }
 
 function rabbitMove(eventName){
+  setCurrentButtonElement(eventName);
+  makeButtonStorage();
+  currentButton = moveButtonStorage[0];
+  moveButtonStorage.length = 0;
   points++;
   determineRabbitMoveDirection(eventName);
   setCurrentPlayfield(eventName);
   findCurrentBoardIndex();
   currentMatrix = matrixStorage[currentElementsIndex];
   currentBoard = boardStorage[currentElementsIndex];
-  currentButtonDiv = moveButtonStorage[currentElementsIndex];
+  currentButtonClassName = '.' + currentButton;
+  currentButtonListElement = document.querySelectorAll(currentButtonClassName);
   characterCurrentCoordinate(characters.rabbitCell);
-  if(rabbitMoveDirection == 'move-right'){
-    rabbitMoveToRight();
-  }
-  if(rabbitMoveDirection == 'move-down'){
-    rabbitMoveToDown();
-  }
-  if(rabbitMoveDirection == 'move-left'){
-    rabbitMoveToLeft();
-  }
-  if(rabbitMoveDirection == 'move-up'){
-    rabbitMoveToUp();
+  switch(rabbitMoveDirection){
+    case 'move-right':
+      rabbitMoveRight();
+      break;
+    case 'move-bottom':
+      rabbitMoveBottom();
+      break;
+    case 'move-left':
+      rabbitMoveLeft();
+      break;
+    case 'move-top':
+      rabbitMoveTop();
+      break;
   }
   if(rabbitCanMove(rabbitNewPositionX, rabbitNewPositionY, points)){
     moveCharacter(characters.rabbitCell, rabbitNewPositionX, rabbitNewPositionY);
   }
   updateWolvesPositions();
-  drawPlayfieldAfterMove();
+  drawPlayfieldAfterMove(eventName);
 }
 
 function determineRabbitMoveDirection(event){
-  rabbitMoveDirection = event.target.classList;
+  rabbitMoveDirection = event.target.id;
   console.log(rabbitMoveDirection);
 }
 
-function rabbitMoveToRight(){
+function rabbitMoveRight(){
   if(posY === (playfieldSize - 1)){
     rabbitNewPositionX = posX, rabbitNewPositionY = 0;
   }else{
@@ -292,7 +307,7 @@ function rabbitMoveToRight(){
   }
 }
 
-function rabbitMoveToDown(){
+function rabbitMoveBottom(){
   if(posX === (playfieldSize - 1)){
     rabbitNewPositionX = 0, rabbitNewPositionY = posY;
   }
@@ -301,7 +316,7 @@ function rabbitMoveToDown(){
   }
 }
 
-function rabbitMoveToLeft(){
+function rabbitMoveLeft(){
   if(posY === 0){
     rabbitNewPositionX = posX, rabbitNewPositionY = (playfieldSize - 1);
   }else{
@@ -309,7 +324,7 @@ function rabbitMoveToLeft(){
   }
 }
 
-function rabbitMoveToUp(){
+function rabbitMoveTop(){
   if(posX === 0){
     rabbitNewPositionX = (playfieldSize - 1), rabbitNewPositionY = posY;
   }else{
@@ -320,6 +335,11 @@ function rabbitMoveToUp(){
 function setCurrentPlayfield(event){
   currentPlayfieldName = event.target.name;
   console.log(currentPlayfieldName);
+}
+
+function setCurrentButtonElement(event){
+  currentButtonElement = event.target.className;
+  console.log(currentButton);
 }
 
 function updateWolvesPositions() {
@@ -395,9 +415,9 @@ if(wolfProbablePositionX = posX - 1){
 setWolfNewPositionCoordinates(closestDistanceStorage);
 }
 
-function calculateDistance(storage){
+function calculateDistance(distanceStorage){
   distance = Math.floor(Math.sqrt(Math.pow(distanceByX, 2) + Math.pow(distanceByY, 2)));
-  storage.push(distance);
+  distanceStorage.push(distance);
 }
 
 function setWolfNewPositionCoordinates(storage){
@@ -437,8 +457,6 @@ function wolfCanMove(characterPositionX, characterPositionY){
   return true;
 }
 
-let rabbitIsWin = false;
-
 function gameStatusBoard(winnerCharacter, sumPoints){
   if(winnerCharacter == characters.wolfCell){
     makeWolvesWinBoard();
@@ -456,9 +474,10 @@ function makeWolvesWinBoard(){
   document.getElementById(currentBoard).appendChild(wolvesWinBoard);
   points = 0;
   wolvesWinBoard.style.zIndex = 1;
+  removeEvent(currentButtonListElement);
 }
 
-function makeRabbitWinBoard(sumPoints){
+function makeRabbitWinBoard(sumPoints){  
   rabbitIsWin = true;
   rabbitWinBoard = document.createElement('div');
   rabbitWinBoard.classList.add('rabbitWinAnnouncement');
@@ -473,7 +492,12 @@ function makeRabbitWinBoard(sumPoints){
   document.getElementById(currentBoard).appendChild(rabbitWinBoard);
   points = 0;
   rabbitWinBoard.style.zIndex = '1';
+  removeEvent(currentButtonListElement);
 }
 
-                            
-  
+function removeEvent(listElement){
+  listElement[0].removeEventListener('click', rabbitMove);
+  listElement[1].removeEventListener('click', rabbitMove);
+  listElement[2].removeEventListener('click', rabbitMove);
+  listElement[3].removeEventListener('click', rabbitMove);
+}

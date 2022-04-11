@@ -236,7 +236,7 @@
     text-align: center;
 }
 
-.move-left{
+#move-left{
     position: absolute;
     left: 0px;
     top: 33px;
@@ -249,7 +249,7 @@
     background-size: contain;
 }
 
-.move-up{
+#move-top{
     position: absolute;
     left: 30px;
     top: 0px;
@@ -264,7 +264,7 @@
     background-size: contain;
 }
 
-.move-down{
+#move-bottom{
     position: absolute;
     left: 30px;
     top: 33px;
@@ -279,7 +279,7 @@
     background-size: contain;
 }
 
-.move-right{
+#move-right{
     position: absolute;
     left: 63px;
     top: 33px;
