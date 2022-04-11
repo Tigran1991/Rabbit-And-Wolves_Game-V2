@@ -10,7 +10,6 @@ let currentMatrix;
 let playfieldSize;
 let playfield;
 let characterStorage = new Array(0);
-let character;
 let storage = new Array(0);
 let characterCoordinateStorage = new Array(0);
 let posX;
@@ -83,22 +82,18 @@ const newBoard = () => {
 
 function makeBoardStorage(){
   boardStorage.push(board.id);
-  console.log(boardStorage);
 }
 
 function makePlayfieldStorage(){
   playfieldStorage.push(playfield.id);
-  console.log(playfieldStorage);
 }
 
 function makeButtonStorage(){
   moveButtonStorage.push(currentButtonElement);
-  console.log(moveButtonStorage);
 }
 
 function findCurrentBoardIndex(){
   currentElementsIndex = playfieldStorage.indexOf(currentPlayfieldName);
-  console.log(currentElementsIndex);
 }
 
 function determineCharacterCounts() {
@@ -137,7 +132,7 @@ function createCurrentMatrix() {
     .fill(0)
     .map(() => new Array(playfieldSize).fill(0));
   matrixStorage.push(currentMatrix);
-  return console.log(matrixStorage);
+  return matrixStorage;
 }
 
 function random() {
@@ -476,6 +471,8 @@ function makeWolvesWinBoard(){
   wolvesWinBoard.style.zIndex = 1;
   removeEvent(currentButtonListElement);
 }
+
+let rabbitIsWin;
 
 function makeRabbitWinBoard(sumPoints){  
   rabbitIsWin = true;
