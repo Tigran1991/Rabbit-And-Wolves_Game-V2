@@ -2,9 +2,11 @@ const reloadBtn = document.querySelector(".reload-btn");
 const newBoardBtn = document.querySelector('.new-board-btn');
 const container = document.getElementById("container");
 const boardField = document.querySelector('.board-field');
+const footer = document.querySelector('.footer');
+const main = document.querySelector('.main');
 
-let cellWidth = 69;
-let boardHeight = 90;
+let cellWidth = 70;
+// let moveButtonsDivHeight = 66;
 
 let currentMatrix;
 let playfieldSize;
@@ -72,6 +74,7 @@ reloadBtn.addEventListener('click', function (){
 
 newBoardBtn.addEventListener("click", function () {
   newBoard();
+  footer.remove();
 });
 
 const newBoard = () => {
@@ -162,7 +165,7 @@ function drawPlayfield() {
   makePlayfield();
   makeMoveButtonsDiv();
   board.appendChild(playfield);
-  playfield.appendChild(moveButtons);
+  board.appendChild(moveButtons);
   makeMoveButtons(moveingToRight, "move-right", rabbitMove);
   makeMoveButtons(moveingToDown, "move-bottom", rabbitMove);
   makeMoveButtons(moveingToLeft, "move-left", rabbitMove);
@@ -176,7 +179,7 @@ function drawPlayfield() {
 
 function drawPlayfieldAfterMove(){
   isThereAPlayfield();
-  makePlayfieldAfterMove();  
+  makePlayfieldAfterMove();
   currentMatrix.forEach((element) => {
     element.forEach((item) => {
       addCharacters(element, item);
@@ -188,7 +191,7 @@ function makeBoard(){
   board = document.createElement("div");
   board.classList.add('board');
   board.style.width = `${playfieldSize * cellWidth}px`;
-  board.style.height = `${(currentMatrix.length - 1) * boardHeight}px`;
+  board.style.height = `${(currentMatrix.length + 1) * cellWidth}px`;
   board.setAttribute('id', `board${serialNumber}`);
   boardField.appendChild(board);
 }
@@ -485,7 +488,7 @@ function makeRabbitWinBoard(sumPoints){
   board.appendChild(rabbitWinBoard);
   rabbitWinBoard.innerHTML = `
               <h2> Congratulations ! </h2>
-              <h2> Rabbit Win !</h2>`;
+              <h2> Rabbit Win ! </h2>`;
   rabbitWinAnnouncementPoints = document.createElement('h2');
   rabbitWinAnnouncementPoints.classList.add('rabbitWinAnnouncementPoints');
   rabbitWinAnnouncementPoints.innerText = `You scored ${sumPoints} points !`;

@@ -8,11 +8,19 @@
 }
 
 .main{
-    display: flex;
+    display: inline-block;
     flex-direction: row;
+    align-self: stretch;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: rgb(78, 207, 46);   
+}
+
+.footer{
     width: 100%;
     height: 100vh;
-    background-color: rgb(78, 207, 46);   
+    background-color: rgb(78, 207, 46);
 }
 
 .container{
@@ -31,7 +39,7 @@
     justify-content: center;
 }
 
-.select-size{
+.select-size, .new-board-btn, .reload-btn{
     width: 160px;
     height: 40px;
     border: 2px solid rgb(224, 167, 9);
@@ -50,60 +58,19 @@
     box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0); 
 }
 
-.select-size:hover{
-    background-color: rgb(5, 23, 92);
-}
-
-.new-board-btn{
-    width: 160px;
-    height: 40px;
-    background-color: #fff;
-    outline: none;
-    border: 2px solid rgb(224, 167, 9);
-    border-radius: 20px;
-    margin-top: 10px;
-    margin-right: 20px;
-    font-size: 20px;
-    background-color: rgb(76, 92, 143);
-    cursor: pointer;
-    color: rgb(224, 167, 9);
-    transition: .3s linear;
-    font-family: 'Sigmar One', cursive;
-    -webkit-box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0); 
-    box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0);
-}
-
-.reload-btn{
-    width: 160px;
-    height: 40px;
-    background-color: #fff;
-    outline: none;
-    border: 2px solid rgb(224, 167, 9);
-    border-radius: 20px;
-    margin-top: 10px;
-    margin-right: 20px;
-    font-size: 20px;
-    background-color: rgb(76, 92, 143);
-    cursor: pointer;
-    color: rgb(224, 167, 9);
-    transition: .3s linear;
-    font-family: 'Sigmar One', cursive;
-    -webkit-box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0); 
-    box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0);
-}
-
-.reload-btn:hover{
+.select-size:hover, .new-board-btn:hover, .reload-btn:hover{
     background-color: rgb(5, 23, 92);
 }
 
 .board-field{
-    display: grid;
-    grid-template-columns: repeat(2, 2fr);
-    align-items: center;
+    display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    /* flex-wrap: wrap; */
-    width: 1000px;
+    /* display: grid;
+    grid-template-columns: repeat(2, 2fr); */
+    align-items: center;
+    justify-content:center;
+    flex-wrap: wrap;
+    width: 1300px;
 }
 
 .board{
@@ -123,8 +90,9 @@
     position: relative;
     margin-top: 10px;
     background-color: rgb(172, 183, 204);
-    -webkit-box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0); 
-    box-shadow: 0px 10px 13px -7px #000000, 5px 5px 15px 5px rgba(0,0,0,0);
+    -webkit-box-shadow: 0px -5px 5px -5px rgba(34, 60, 80, 0.6);
+    -moz-box-shadow: 0px -5px 5px -5px rgba(34, 60, 80, 0.6);
+    box-shadow: 0px -5px 5px -5px rgba(34, 60, 80, 0.6);
     padding: 30px;
     border-radius: 10px;
     /* margin-left: 20px;
@@ -134,7 +102,7 @@
 .side-buttons{
     display: flex;
     position: absolute;
-    bottom: -66px;
+    bottom: 0px;
     width: 96px;
     height: 66px;
     background-color: rgb(103, 137, 199);
@@ -195,19 +163,21 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    font-size: 40px;
     font-family: 'Press Start 2P', cursive;
     font-family: 'Rubik Bubbles', cursive;
     font-family: 'Titan One', cursive;
-    width: 300px;
+    width: 330px;
     height: 300px;
-    background-color: rgb(198, 209, 172);
+    background-color: rgb(177, 214, 91);
     border-radius: 10px;
-    border: 10px solid rgb(138, 173, 142);
+    border: 10px solid rgb(84, 95, 84);
     position: absolute;
     margin: 180px auto;
     font-size: 20px;
-    color: #333;
+    color: rgb(84, 95, 84);
     z-index: -1;
+    top: -70px;
 }
 
 .rabbitWinAnnouncement{
@@ -237,19 +207,6 @@
     text-align: center;
 }
 
-#move-left{
-    position: absolute;
-    left: 0px;
-    top: 33px;
-    width: 30px;
-    height: 30px;
-    background-color: rgb(50, 103, 146);
-    border: none;
-    cursor: pointer;
-    background: url(./img/arrows/arrow-left.png);
-    background-size: contain;
-}
-
 #move-top{
     position: absolute;
     left: 30px;
@@ -262,6 +219,19 @@
     bottom: 0px;
     cursor: pointer;
     background: url(./img/arrows/arrow-up.png);
+    background-size: contain;
+}
+
+#move-left{
+    position: absolute;
+    left: 0px;
+    top: 33px;
+    width: 30px;
+    height: 30px;
+    background-color: rgb(50, 103, 146);
+    border: none;
+    cursor: pointer;
+    background: url(./img/arrows/arrow-left.png);
     background-size: contain;
 }
 
