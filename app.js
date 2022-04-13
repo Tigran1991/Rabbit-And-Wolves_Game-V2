@@ -6,7 +6,6 @@ const footer = document.querySelector('.footer');
 const main = document.querySelector('.main');
 
 let cellWidth = 70;
-// let moveButtonsDivHeight = 66;
 
 let currentMatrix;
 let playfieldSize;
@@ -34,21 +33,18 @@ let matrixStorage = new Array(0);
 let boardStorage = new Array(0);
 let playfieldStorage = new Array(0);
 let moveButtonStorage = new Array(0);
+let playfieldSizeStorage = new Array(0);
 let currentElementsIndex;
 let serialNumber = 0;
 let currentBoard;
 let currentPlayfieldName;
 let currentButton;
 let currentButtonElement;
-let rabbitWinBoard;
-let rabbitWinAnnouncement;
-let wolvesWinBoard;
-let wolvesWinAnnouncement;
 let points = 0;
-let rabbitWinAnnouncementPoints;
 let rabbitMoveDirection;
 let currentButtonClassName;
 let currentButtonListElement;
+let currentPlayfieldSize;
 
 const characters = {
   freeCell: 0,
@@ -85,10 +81,16 @@ const newBoard = () => {
   drawPlayfield();
   makeBoardStorage();
   makePlayfieldStorage();
+  makePlayfieldSizeStorage();
 }
 
 function makeBoardStorage(){
   boardStorage.push(board.id);
+}
+
+function makePlayfieldSizeStorage(){
+  playfieldSizeStorage.push(currentMatrix.length);
+  console.log(playfieldSizeStorage);
 }
 
 function makePlayfieldStorage(){
@@ -139,7 +141,8 @@ function createCurrentMatrix() {
     .fill(0)
     .map(() => new Array(playfieldSize).fill(0));
   matrixStorage.push(currentMatrix);
-  return matrixStorage;
+
+  return console.log(matrixStorage);
 }
 
 function random() {
@@ -262,14 +265,15 @@ function characterCurrentCoordinate(character) {
 }
 
 function rabbitMove(eventName){
+  setCurrentPlayfield(eventName);
+  findCurrentBoardIndex();
+  currentPlayfieldSize = playfieldSizeStorage[currentElementsIndex];
   setCurrentButtonElement(eventName);
   makeButtonStorage();
   currentButton = moveButtonStorage[0];
   moveButtonStorage.length = 0;
   points++;
   determineRabbitMoveDirection(eventName);
-  setCurrentPlayfield(eventName);
-  findCurrentBoardIndex();
   currentMatrix = matrixStorage[currentElementsIndex];
   currentBoard = boardStorage[currentElementsIndex];
   currentButtonClassName = '.' + currentButton;
@@ -302,7 +306,7 @@ function determineRabbitMoveDirection(event){
 }
 
 function rabbitMoveRight(){
-  if(posY === (playfieldSize - 1)){
+  if(posY === (currentPlayfieldSize - 1)){
     rabbitNewPositionX = posX, rabbitNewPositionY = 0;
   }else{
     rabbitNewPositionX = posX, rabbitNewPositionY = (posY + 1);
@@ -310,7 +314,7 @@ function rabbitMoveRight(){
 }
 
 function rabbitMoveBottom(){
-  if(posX === (playfieldSize - 1)){
+  if(posX === (currentPlayfieldSize - 1)){
     rabbitNewPositionX = 0, rabbitNewPositionY = posY;
   }
   else{
@@ -320,7 +324,7 @@ function rabbitMoveBottom(){
 
 function rabbitMoveLeft(){
   if(posY === 0){
-    rabbitNewPositionX = posX, rabbitNewPositionY = (playfieldSize - 1);
+    rabbitNewPositionX = posX, rabbitNewPositionY = (currentPlayfieldSize - 1);
   }else{
     rabbitNewPositionX = posX, rabbitNewPositionY = (posY - 1);
   }
@@ -328,7 +332,7 @@ function rabbitMoveLeft(){
 
 function rabbitMoveTop(){
   if(posX === 0){
-    rabbitNewPositionX = (playfieldSize - 1), rabbitNewPositionY = posY;
+    rabbitNewPositionX = (currentPlayfieldSize - 1), rabbitNewPositionY = posY;
   }else{
     rabbitNewPositionX = (posX - 1), rabbitNewPositionY = posY;
   }
@@ -341,7 +345,6 @@ function setCurrentPlayfield(event){
 
 function setCurrentButtonElement(event){
   currentButtonElement = event.target.className;
-  console.log(currentButton);
 }
 
 function updateWolvesPositions() {
@@ -469,6 +472,7 @@ function gameStatusBoard(winnerCharacter, sumPoints){
 }
 
 function makeWolvesWinBoard(){
+  let wolvesWinBoard;
   wolvesWinBoard = document.createElement('div');
   wolvesWinBoard.classList.add('wolvesWinAnnouncement');
   wolvesWinBoard.innerHTML = `
@@ -481,7 +485,9 @@ function makeWolvesWinBoard(){
 
 let rabbitIsWin;
 
-function makeRabbitWinBoard(sumPoints){  
+function makeRabbitWinBoard(sumPoints){
+  let rabbitWinBoard;
+  let rabbitWinAnnouncementPoints;
   rabbitIsWin = true;
   rabbitWinBoard = document.createElement('div');
   rabbitWinBoard.classList.add('rabbitWinAnnouncement');
