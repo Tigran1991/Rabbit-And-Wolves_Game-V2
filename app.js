@@ -300,7 +300,6 @@ function rabbitMove(eventName){
 
 function determineRabbitMoveDirection(event){
   rabbitMoveDirection = event.target.id;
-  console.log(rabbitMoveDirection);
 }
 
 function rabbitMoveRight(){
@@ -338,7 +337,6 @@ function rabbitMoveTop(){
 
 function setCurrentPlayfield(event){
   currentPlayfieldName = event.target.name;
-  console.log(currentPlayfieldName);
 }
 
 function setCurrentButtonElement(event){
