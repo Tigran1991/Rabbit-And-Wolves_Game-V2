@@ -24,11 +24,11 @@ let wolfNewPositionX;
 let wolfNewPositionY;
 let minDistance;
 let moveButtons;
+let board;
 let moveingToRight;
 let moveingToDown;
 let moveingToLeft;
 let moveingToUp;
-let board;
 let matrixStorage = new Array(0);
 let boardStorage = new Array(0);
 let playfieldStorage = new Array(0);
@@ -90,7 +90,6 @@ function makeBoardStorage(){
 
 function makePlayfieldSizeStorage(){
   playfieldSizeStorage.push(currentMatrix.length);
-  console.log(playfieldSizeStorage);
 }
 
 function makePlayfieldStorage(){
@@ -141,8 +140,7 @@ function createCurrentMatrix() {
     .fill(0)
     .map(() => new Array(playfieldSize).fill(0));
   matrixStorage.push(currentMatrix);
-
-  return console.log(matrixStorage);
+  return matrixStorage;
 }
 
 function random() {
