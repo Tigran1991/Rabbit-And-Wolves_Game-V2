@@ -102,7 +102,7 @@
 .side-buttons{
     display: flex;
     position: absolute;
-    bottom: 0px;
+    bottom: 10px;
     width: 96px;
     height: 66px;
     background-color: rgb(103, 137, 199);

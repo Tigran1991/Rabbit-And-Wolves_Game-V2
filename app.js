@@ -25,10 +25,6 @@ let wolfNewPositionY;
 let minDistance;
 let moveButtons;
 let board;
-let moveingToRight;
-let moveingToDown;
-let moveingToLeft;
-let moveingToUp;
 let matrixStorage = new Array(0);
 let boardStorage = new Array(0);
 let playfieldStorage = new Array(0);
@@ -162,6 +158,10 @@ function setRandomPositionForCharacters(){
 }
 
 function drawPlayfield() {
+  let moveingToRight;
+  let moveingToDown;
+  let moveingToLeft;
+  let moveingToUp;
   makeBoard();
   makePlayfield();
   makeMoveButtonsDiv();
